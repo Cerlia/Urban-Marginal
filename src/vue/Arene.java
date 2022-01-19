@@ -2,7 +2,6 @@ package vue;
 
 import java.awt.Dimension;
 import java.net.URL;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,25 +13,17 @@ import javax.swing.JTextField;
 /**
  * frame de l'arène du jeu
  * @author emds
- *
  */
 public class Arene extends JFrame {
-
-	/**
-	 * Panel général
-	 */
+	// Panel général
 	private JPanel contentPane;
-	/**
-	 * Zone de saisie du t'chat
-	 */
+	// Zone de saisie du t'chat
 	private JTextField txtSaisie;
-	/**
-	 * Zone d'affichage du t'chat
-	 */
+	// Zone d'affichage du tchat
 	private JTextArea txtChat ;
 
 	/**
-	 * Create the frame.
+	 * Constructeur
 	 */
 	public Arene() {
 		// Dimension de la frame en fonction de son contenu
@@ -65,8 +56,6 @@ public class Arene extends JFrame {
 		URL resource = getClass().getClassLoader().getResource(chemin);
 		lblFond.setIcon(new ImageIcon(resource));		
 		lblFond.setBounds(0, 0, 800, 600);
-		contentPane.add(lblFond);
-		
+		contentPane.add(lblFond);		
 	}
-
 }
