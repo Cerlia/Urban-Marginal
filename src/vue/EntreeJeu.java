@@ -12,21 +12,13 @@ import controleur.Controle;
 /**
  * Frame de l'entrée dans le jeu (choix entre serveur et client)
  * @author emds
- *
  */
 public class EntreeJeu extends JFrame {
-
-	/**
-	 * Panel général
-	 */
+	// Panel général
 	private JPanel contentPane;
-	/**
-	 * Zone de saisie de l'IP
-	 */
+	// Zone de saisie de l'IP
 	private JTextField txtIp;
-	/**
-	 * contrôle
-	 */
+	// pour communication avec controle
 	private Controle controle;
 
 	/**
@@ -51,7 +43,7 @@ public class EntreeJeu extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Constructeur
 	 */
 	public EntreeJeu(Controle controle) {
 		setResizable(false);

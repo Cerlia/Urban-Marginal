@@ -57,7 +57,10 @@ public class Joueur extends Objet {
 	/**
 	 * Initialisation d'un joueur (pseudo et numéro, calcul de la 1ère position, affichage, création de la boule)
 	 */
-	public void initPerso() {
+	public void initPerso(String pseudo, int numPerso) {
+		this.pseudo = pseudo;
+		this.numPerso = numPerso;
+		System.out.println("Joueur "+pseudo+" - num perso "+numPerso+" créé");
 	}
 
 	/**

@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controleur.Controle;
+import controleur.Global;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -20,20 +21,17 @@ import javax.swing.SwingConstants;
 /**
  * Frame du choix du joueur
  * @author emds
- *
  */
-public class ChoixJoueur extends JFrame {
-
+public class ChoixJoueur extends JFrame implements Global {
 	// panel général
 	private JPanel contentPane;
 	// Zone de saisie du pseudo
 	private JTextField txtPseudo;
-	// controle
+	// pour communication avec controle
 	private Controle controle;
 	// pour l'affichage du personnage au moment du choix
 	private JLabel lblPersonnage;
 	private int numPerso;
-	private static final int PERSOMAX = 3;
 
 	/**
 	 * Clic sur la flèche "précédent" pour afficher le personnage précédent
