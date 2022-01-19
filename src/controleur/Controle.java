@@ -45,6 +45,16 @@ public class Controle implements AsyncResponse {
 	}
 	
 	/**
+	 * Ouverture de la zone de jeu après sélection du personnage et pseudo
+	 * @param pseudo
+	 * @param numPerso
+	 */
+	public void evenementChoixJoueur(String pseudo, int numPerso) {
+		this.frmChoix.dispose();
+		this.frmArene.setVisible(true);
+	}
+	
+	/**
 	 * Constructeur
 	 */
 	private Controle() {
@@ -59,7 +69,7 @@ public class Controle implements AsyncResponse {
 			if(this.typeJeu.equals("client")) {
 				this.frmEntreeJeu.dispose();
 				this.frmArene = new Arene();
-				this.frmChoix = new ChoixJoueur();
+				this.frmChoix = new ChoixJoueur(this);
 				this.frmChoix.setVisible(true);	
 			}
 		break;
