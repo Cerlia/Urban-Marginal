@@ -1,5 +1,7 @@
 package modele;
 
+import javax.swing.JPanel;
+
 import controleur.Controle;
 import outils.connexion.Connection;
 
@@ -24,6 +26,9 @@ public class JeuClient extends Jeu {
 
 	@Override
 	public void reception(Connection connection, Object info) {
+		if(info instanceof JPanel) {
+			this.controle.evenementJeuClient("ajout panel mur", info);
+		}
 	}
 	
 	@Override

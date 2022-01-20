@@ -1,7 +1,12 @@
 package controleur;
 
 public interface Global {
-	public static final int PORT = 6666;
-	public static final String SEP = "~";
-	public static final int PERSOMAX = 3;
+	int PORT = 6666;	// port d'écoute du serveur jeu
+	String SEP = "~";	// séparateur de chaîne
+	int PERSOMAX = 3;	// numéro de personnage max
+	int LARGARN = 800;  // largeur de l'arène
+	int HAUTARN = 600;	// hauteur de l'arène
+	int LARGMUR = 34;	// largeur du mur
+	int HAUTMUR = 35;	// hauteur du mur
+	int NBMURS = 20;	// nombre de murs
 }

@@ -39,6 +39,7 @@ public class JeuServeur extends Jeu implements Global{
 		String[] infos = ((String)info).split(SEP);
 		switch (infos[0]) {
 			case "pseudo" :
+				controle.evenementJeuServeur("ajout panel mur", connection);
 				(lesJoueurs.get(connection)).initPerso(infos[1], Integer.parseInt(infos[2]));
 				break;
 		}
@@ -59,6 +60,10 @@ public class JeuServeur extends Jeu implements Global{
 	 * Génération des murs
 	 */
 	public void constructionMurs() {
-	}
-	
+		for(int k = 0; k < NBMURS; k++) {
+			Mur unMur = new Mur();
+			lesMurs.add(unMur);
+			controle.evenementJeuServeur("ajout mur", unMur.getJLabel());
+		}
+	}	
 }

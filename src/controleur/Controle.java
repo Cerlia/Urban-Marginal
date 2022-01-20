@@ -7,6 +7,9 @@ import outils.connexion.*;
 import modele.Jeu;
 import modele.JeuServeur;
 import modele.JeuClient;
+
+import javax.swing.JPanel;
+
 import controleur.Global;
 
 
@@ -29,6 +32,14 @@ public class Controle implements AsyncResponse, Global {
 	}
 	
 	/**
+	 * Constructeur
+	 */
+	private Controle() {
+		this.frmEntreeJeu = new EntreeJeu(this) ;
+		this.frmEntreeJeu.setVisible(true);
+	}
+	
+	/**
 	 * Déclenche la création d'un serveur ou le rejoignement d'un serveur existant
 	 */
 	public void evenementEntreeJeu(String info) {	
@@ -37,6 +48,7 @@ public class Controle implements AsyncResponse, Global {
 			leJeu = new JeuServeur(this);
 			this.frmEntreeJeu.dispose();
 			this.frmArene = new Arene();
+			((JeuServeur)leJeu).constructionMurs();
 			this.frmArene.setVisible(true);
 		}
 		else {
@@ -55,32 +67,32 @@ public class Controle implements AsyncResponse, Global {
 		this.frmArene.setVisible(true);
 	}
 	
+	/**
+	 * 
+	 * @param connection
+	 * @param objet
+	 */
 	public void envoi(Connection connection, Object objet) {
 		connection.envoi(objet);
 	}
 	
 	/**
-	 * Constructeur
+	 * 
 	 */
-	private Controle() {
-		this.frmEntreeJeu = new EntreeJeu(this) ;
-		this.frmEntreeJeu.setVisible(true);
-	}
-
 	@Override
 	public void reception(Connection connection, String ordre, Object info) {
 		switch(ordre) {
 		case "connexion" :
 			if(!(this.leJeu instanceof JeuServeur)) {
-				leJeu = new JeuClient(this);
-				leJeu.connexion(connection);
+				this.leJeu = new JeuClient(this);
+				this.leJeu.connexion(connection);
 				this.frmEntreeJeu.dispose();
 				this.frmArene = new Arene();
 				this.frmChoix = new ChoixJoueur(this);
 				this.frmChoix.setVisible(true);	
 			}
 			else {
-				leJeu.connexion(connection);
+				this.leJeu.connexion(connection);
 			}
 		break;
 		case "réception" :
@@ -90,5 +102,34 @@ public class Controle implements AsyncResponse, Global {
 			
 		break;
 		}			
+	}
+	
+	/**
+	 * 
+	 * @param ordre
+	 * @param info
+	 */
+	public void evenementJeuServeur(String ordre, Object info) {
+		switch (ordre) {
+		case ("ajout mur") :
+			frmArene.ajoutMurs(info);
+			break;
+		case ("ajout panel mur") :
+			this.leJeu.envoi((Connection)info, this.frmArene.getJpnMurs());
+			break;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param ordre
+	 * @param info
+	 */
+	public void evenementJeuClient(String ordre, Object info) {
+		switch (ordre) {
+		case ("ajout panel mur") :
+			this.frmArene.setJpnMurs((JPanel)info);
+			break;
+		}
 	}
 }
