@@ -42,6 +42,12 @@ public class JeuServeur extends Jeu implements Global{
 			String pseudo = infos[1];
 			int numPerso = Integer.parseInt(infos[2]);
 			this.lesJoueurs.get(connection).initPerso(pseudo, numPerso, this.lesJoueurs.values(), this.lesMurs);
+			controle.evenementJeuServeur("ajout phrase", "*** " + pseudo + " vient de se connecter ***");
+			break;
+		case "tchat" :
+			String nomJoueur = lesJoueurs.get(connection).getPseudo();
+			String phrase = nomJoueur + " > " + infos[1];
+			controle.evenementJeuServeur("ajout phrase", phrase);
 			break;
 		}
 	}
@@ -61,7 +67,10 @@ public class JeuServeur extends Jeu implements Global{
 	 * Envoi d'une information vers tous les clients
 	 * fais appel plusieurs fois à l'envoi de la classe Jeu
 	 */	
-	public void envoi() {
+	public void envoi(Object info) {
+		for(Connection connection : this.lesJoueurs.keySet()) {
+			super.envoi(connection, info);
+		}
 	}
 	
 	/**

@@ -10,27 +10,17 @@ import outils.connexion.Connection;
 public abstract class Jeu {
 
 	protected Controle controle;
-	
-	/**
-	 * Réception d'une connexion (pour communiquer avec un ordinateur distant)
-	 */
+	// Réception d'une connexion (pour communiquer avec un ordinateur distant)
 	public abstract void connexion(Connection connection) ;
 	
-	/**
-	 * Réception d'une information provenant de l'ordinateur distant
-	 */
+	// Réception d'une information provenant de l'ordinateur distant
 	public abstract void reception(Connection connection, Object info) ;
 	
-	/**
-	 * Déconnexion de l'ordinateur distant
-	 */
+	// Déconnexion de l'ordinateur distant
 	public abstract void deconnexion() ;
 	
-	/**
-	 * Envoi d'une information vers un ordinateur distant
-	 */
+	// Envoi d'une information vers un ordinateur distant
 	public void envoi(Connection connection, Object objet) {
 		controle.envoi(connection, objet);
-	}
-	
+	}	
 }
