@@ -48,7 +48,7 @@ public class Controle implements AsyncResponse, Global {
 			new ServeurSocket(this, PORT);
 			this.leJeu = new JeuServeur(this);
 			this.frmEntreeJeu.dispose();
-			this.frmArene = new Arene();
+			this.frmArene = new Arene(this, "serveur");
 			((JeuServeur)this.leJeu).constructionMurs();
 			this.frmArene.setVisible(true);
 		}
@@ -69,7 +69,7 @@ public class Controle implements AsyncResponse, Global {
 	}
 	
 	/**
-	 * 
+	 * Reçoit des informations de leJeu de type JeuServeur
 	 * @param ordre
 	 * @param info
 	 */
@@ -87,11 +87,15 @@ public class Controle implements AsyncResponse, Global {
 		case ("modif panel jeu") :
 			this.leJeu.envoi((Connection)info, this.frmArene.getJpnJeu());
 			break;
+		case ("ajout phrase") :
+			this.frmArene.ajoutTchat((String)info);
+			((JeuServeur)leJeu).envoi(frmArene.getTxtChat());
+			break;
 		}
 	}
 	
 	/**
-	 * 
+	 * Reçoit des informations de leJeu de type JeuClient
 	 * @param ordre
 	 * @param info
 	 */
@@ -103,7 +107,17 @@ public class Controle implements AsyncResponse, Global {
 		case ("modif panel jeu") :
 			this.frmArene.setJpnJeu((JPanel)info);
 			break;
+		case ("modif tchat") :
+			this.frmArene.setTxtChat((String)info);
+			break;
 		}
+	}
+	
+	/**
+	 * Reçoit des informations de frmArene
+	 */	
+	public void evenementArene(String message) {
+		((JeuClient)leJeu).envoi("tchat" + SEP + message);
 	}
 	
 	
@@ -127,7 +141,7 @@ public class Controle implements AsyncResponse, Global {
 				this.leJeu = new JeuClient(this);
 				this.leJeu.connexion(connection);
 				this.frmEntreeJeu.dispose();
-				this.frmArene = new Arene();
+				this.frmArene = new Arene(this, "client");
 				this.frmChoix = new ChoixJoueur(this);
 				this.frmChoix.setVisible(true);	
 			}

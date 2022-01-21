@@ -10,12 +10,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import controleur.Global;
+import controleur.Controle;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * frame de l'arène du jeu
  * @author emds
  */
-public class Arene extends JFrame implements Global{
+public class Arene extends JFrame implements Global {
 	// Panel général
 	private JPanel contentPane;
 	// Zone de saisie du t'chat
@@ -26,10 +29,13 @@ public class Arene extends JFrame implements Global{
 	private JPanel jpnMurs;
 	// Panel des personnages
 	private JPanel jpnJeu;
+	// controle pour communiquer avec contrôleur
+	private Controle controle;
+	// indique si l'arène est celle d'un client ou du serveur
+	private boolean client = false;
 	
 	/**
 	 * getter sur le panel des murs
-	 * @return
 	 */
 	public JPanel getJpnMurs() {
 		return jpnMurs;		
@@ -37,7 +43,6 @@ public class Arene extends JFrame implements Global{
 	
 	/**
 	 * setter sur le panel des murs
-	 * @param jpnMurs
 	 */
 	public void setJpnMurs(JPanel jpnMurs) {
 		this.jpnMurs.add(jpnMurs);
@@ -46,7 +51,6 @@ public class Arene extends JFrame implements Global{
 	
 	/**
 	 * getter sur le panel du jeu
-	 * @return
 	 */
 	public JPanel getJpnJeu() {
 		return jpnJeu;
@@ -54,7 +58,6 @@ public class Arene extends JFrame implements Global{
 	
 	/**
 	 * setter sur le panel du jeu
-	 * @param jpnJeu
 	 */
 	public void setJpnJeu(JPanel jpnJeu) {
 		this.jpnJeu.removeAll();
@@ -62,7 +65,21 @@ public class Arene extends JFrame implements Global{
 		this.jpnJeu.repaint();
 	}
 	
-	
+	/**
+	 * getter sur la zone d'affichage du tchat
+	 */
+	public String getTxtChat() {
+		return txtChat.getText();
+	}
+
+	/**
+	 * setter sur la zone d'affichage du tchat
+	 */
+	public void setTxtChat(String txtChat) {
+		this.txtChat.setText(txtChat);
+		this.txtChat.setCaretPosition(this.txtChat.getDocument().getLength());
+	}
+		
 	/**
 	 * Ajoute un mur au panel jpnMurs
 	 */
@@ -78,17 +95,30 @@ public class Arene extends JFrame implements Global{
 	public void ajoutJLabelJeu(JLabel unJLabel) {
 		this.jpnJeu.add(unJLabel);
 		this.jpnJeu.repaint();		
-	}	
+	}
+	
+	/**
+	 * Ajoute une phrase dans la zone de tchat
+	 */
+	public void ajoutTchat(String phrase) {
+		this.txtChat.setText(this.txtChat.getText() + phrase + "\r\n");
+		this.txtChat.setCaretPosition(this.txtChat.getDocument().getLength());
+	}
 
 	/**
 	 * Constructeur
 	 */
-	public Arene() {
+	public Arene(Controle controle, String typeArene) {
 		// Dimension de la frame en fonction de son contenu
 		this.getContentPane().setPreferredSize(new Dimension(800, 600 + 25 + 140));
 	    this.pack();
 	    // interdiction de changer la taille
-		this.setResizable(false);		
+		this.setResizable(false);	
+		
+		this.controle = controle;
+		if (typeArene != "serveur") {
+			client = true;
+		}
 		
 		setTitle("Arène");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,11 +137,24 @@ public class Arene extends JFrame implements Global{
 		jpnJeu.setOpaque(false);
 		jpnJeu.setLayout(null);		
 		contentPane.add(jpnJeu);
-	
-		txtSaisie = new JTextField();
-		txtSaisie.setBounds(0, 600, 800, 25);
-		contentPane.add(txtSaisie);
-		txtSaisie.setColumns(10);
+		
+		if (client) {
+			txtSaisie = new JTextField();
+			txtSaisie.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+						if(!txtSaisie.getText().equals("")) {
+							controle.evenementArene(txtSaisie.getText());
+							txtSaisie.setText("");
+						}					
+					}
+				}
+			});
+			txtSaisie.setBounds(0, 600, 800, 25);
+			contentPane.add(txtSaisie);
+			txtSaisie.setColumns(10);
+		}
 		
 		JScrollPane jspChat = new JScrollPane();
 		jspChat.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -120,6 +163,7 @@ public class Arene extends JFrame implements Global{
 		
 		txtChat = new JTextArea();
 		jspChat.setViewportView(txtChat);
+		txtChat.setEditable(false);
 		
 		JLabel lblFond = new JLabel("");
 		String chemin = "fonds/fondarene.jpg";

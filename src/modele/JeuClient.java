@@ -33,8 +33,10 @@ public class JeuClient extends Jeu {
 			}
 			else {
 				this.controle.evenementJeuClient("modif panel jeu", info);
-			}			
-		}			
+			}		
+		} else if (info instanceof String) {
+			controle.evenementJeuClient("modif tchat", info);
+		}
 	}
 	
 	@Override
@@ -43,7 +45,7 @@ public class JeuClient extends Jeu {
 
 	/**
 	 * Envoi d'une information vers le serveur
-	 * fais appel une fois à l'envoi dans la classe Jeu
+	 * fait appel une fois à l'envoi dans la classe Jeu
 	 */
 	public void envoi(String message) {
 		super.envoi(this.connection, message);
