@@ -24,14 +24,8 @@ public class Arene extends JFrame implements Global{
 	private JTextArea txtChat;
 	// Panel des murs
 	private JPanel jpnMurs;
-	
-	/**
-	 * Ajoute les murs au panel jpnMurs
-	 */
-	public void ajoutMurs(Object unMur) {
-		jpnMurs.add((JLabel)unMur);
-		jpnMurs.repaint();
-	}
+	// Panel des personnages
+	private JPanel jpnJeu;
 	
 	/**
 	 * getter sur le panel des murs
@@ -41,10 +35,50 @@ public class Arene extends JFrame implements Global{
 		return jpnMurs;		
 	}
 	
-	public void setJpnMurs(JPanel unJPanel) {
-		this.jpnMurs.add(unJPanel);
+	/**
+	 * setter sur le panel des murs
+	 * @param jpnMurs
+	 */
+	public void setJpnMurs(JPanel jpnMurs) {
+		this.jpnMurs.add(jpnMurs);
 		this.jpnMurs.repaint();
 	}
+	
+	/**
+	 * getter sur le panel du jeu
+	 * @return
+	 */
+	public JPanel getJpnJeu() {
+		return jpnJeu;
+	}
+	
+	/**
+	 * setter sur le panel du jeu
+	 * @param jpnJeu
+	 */
+	public void setJpnJeu(JPanel jpnJeu) {
+		this.jpnJeu.removeAll();
+		this.jpnJeu.add(jpnJeu);
+		this.jpnJeu.repaint();
+	}
+	
+	
+	/**
+	 * Ajoute un mur au panel jpnMurs
+	 */
+	public void ajoutMurs(Object unMur) {
+		jpnMurs.add((JLabel)unMur);
+		jpnMurs.repaint();
+	}
+	
+	/**
+	 * Ajoute un élément JLabel au panel jpnJeu
+	 * @param unJLabel
+	 */
+	public void ajoutJLabelJeu(JLabel unJLabel) {
+		this.jpnJeu.add(unJLabel);
+		this.jpnJeu.repaint();		
+	}	
 
 	/**
 	 * Constructeur
@@ -56,7 +90,7 @@ public class Arene extends JFrame implements Global{
 	    // interdiction de changer la taille
 		this.setResizable(false);		
 		
-		setTitle("Arena");
+		setTitle("Arène");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
@@ -67,6 +101,12 @@ public class Arene extends JFrame implements Global{
 		jpnMurs.setOpaque(false);
 		jpnMurs.setLayout(null);		
 		contentPane.add(jpnMurs);
+		
+		jpnJeu = new JPanel();
+		jpnJeu.setBounds(0, 0, LARGARN, HAUTARN);
+		jpnJeu.setOpaque(false);
+		jpnJeu.setLayout(null);		
+		contentPane.add(jpnJeu);
 	
 		txtSaisie = new JTextField();
 		txtSaisie.setBounds(0, 600, 800, 25);

@@ -1,7 +1,6 @@
 package modele;
 
 import javax.swing.JPanel;
-
 import controleur.Controle;
 import outils.connexion.Connection;
 
@@ -10,7 +9,8 @@ import outils.connexion.Connection;
  *
  */
 public class JeuClient extends Jeu {
-	private Connection connection;	
+	private Connection connection;
+	private boolean mursOk = false;
 	
 	/**
 	 * Controleur
@@ -27,8 +27,14 @@ public class JeuClient extends Jeu {
 	@Override
 	public void reception(Connection connection, Object info) {
 		if(info instanceof JPanel) {
-			this.controle.evenementJeuClient("ajout panel mur", info);
-		}
+			if(!this.mursOk) {
+				this.controle.evenementJeuClient("ajout panel mur", info);
+				this.mursOk = true;
+			}
+			else {
+				this.controle.evenementJeuClient("modif panel jeu", info);
+			}			
+		}			
 	}
 	
 	@Override
