@@ -8,6 +8,7 @@ import modele.Jeu;
 import modele.JeuServeur;
 import modele.JeuClient;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controleur.Global;
@@ -45,10 +46,10 @@ public class Controle implements AsyncResponse, Global {
 	public void evenementEntreeJeu(String info) {	
 		if (info.equals("serveur")) {
 			new ServeurSocket(this, PORT);
-			leJeu = new JeuServeur(this);
+			this.leJeu = new JeuServeur(this);
 			this.frmEntreeJeu.dispose();
 			this.frmArene = new Arene();
-			((JeuServeur)leJeu).constructionMurs();
+			((JeuServeur)this.leJeu).constructionMurs();
 			this.frmArene.setVisible(true);
 		}
 		else {
@@ -62,18 +63,57 @@ public class Controle implements AsyncResponse, Global {
 	 * @param numPerso transmis par la frame ChoixJoueur
 	 */
 	public void evenementChoixJoueur(String pseudo, int numPerso) {
-		((JeuClient)leJeu).envoi("pseudo" + SEP + pseudo + SEP + numPerso);	
 		this.frmChoix.dispose();
 		this.frmArene.setVisible(true);
+		((JeuClient)this.leJeu).envoi("pseudo" + SEP + pseudo + SEP + numPerso);	
 	}
+	
+	/**
+	 * 
+	 * @param ordre
+	 * @param info
+	 */
+	public void evenementJeuServeur(String ordre, Object info) {
+		switch (ordre) {
+		case ("ajout mur") :
+			frmArene.ajoutMurs(info);
+			break;
+		case ("ajout panel mur") :
+			this.leJeu.envoi((Connection)info, this.frmArene.getJpnMurs());
+			break;
+		case ("ajout jlabel jeu") :
+			this.frmArene.ajoutJLabelJeu((JLabel)info);
+			break;
+		case ("modif panel jeu") :
+			this.leJeu.envoi((Connection)info, this.frmArene.getJpnJeu());
+			break;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param ordre
+	 * @param info
+	 */
+	public void evenementJeuClient(String ordre, Object info) {
+		switch (ordre) {
+		case ("ajout panel mur") :
+			this.frmArene.setJpnMurs((JPanel)info);
+			break;
+		case ("modif panel jeu") :
+			this.frmArene.setJpnJeu((JPanel)info);
+			break;
+		}
+	}
+	
 	
 	/**
 	 * 
 	 * @param connection
 	 * @param objet
 	 */
-	public void envoi(Connection connection, Object objet) {
-		connection.envoi(objet);
+	public void envoi(Connection connection, Object info) {
+		connection.envoi(info);
 	}
 	
 	/**
@@ -94,42 +134,12 @@ public class Controle implements AsyncResponse, Global {
 			else {
 				this.leJeu.connexion(connection);
 			}
-		break;
+			break;
 		case "réception" :
-			leJeu.reception(connection, info);
-		break;
-		case "déconnexion" :
-			
-		break;
+			this.leJeu.reception(connection, info);
+			break;
+		case "déconnexion" :			
+			break;
 		}			
-	}
-	
-	/**
-	 * 
-	 * @param ordre
-	 * @param info
-	 */
-	public void evenementJeuServeur(String ordre, Object info) {
-		switch (ordre) {
-		case ("ajout mur") :
-			frmArene.ajoutMurs(info);
-			break;
-		case ("ajout panel mur") :
-			this.leJeu.envoi((Connection)info, this.frmArene.getJpnMurs());
-			break;
-		}
-	}
-	
-	/**
-	 * 
-	 * @param ordre
-	 * @param info
-	 */
-	public void evenementJeuClient(String ordre, Object info) {
-		switch (ordre) {
-		case ("ajout panel mur") :
-			this.frmArene.setJpnMurs((JPanel)info);
-			break;
-		}
 	}
 }

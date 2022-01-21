@@ -8,12 +8,11 @@ import javax.swing.JLabel;
  *
  */
 public abstract class Objet {
-
 	// position X de l'objet
 	protected Integer posX ;
 	// position Y de l'objet
 	protected Integer posY ;
-	// label
+	// label d'affichage de l'objet
 	protected JLabel jLabel;
 	
 	/**
@@ -29,7 +28,14 @@ public abstract class Objet {
 	 * @param objet contient l'objet à contrôler
 	 * @return true si les 2 objets se touchent
 	 */
-	public Boolean toucheObjet (Objet objet) {
-		return null;
+	public Boolean toucheObjet(Objet objet) {
+		if (this.jLabel==null || objet.jLabel==null) {
+			return false ;
+		} else {
+			return(this.posX + this.jLabel.getWidth() > objet.posX &&
+				this.posX < objet.posX + objet.jLabel.getWidth() && 
+				this.posY + this.jLabel.getHeight() > objet.posY &&
+				this.posY < objet.posY + objet.jLabel.getHeight()) ;
+		}		
 	}	
 }

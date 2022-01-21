@@ -3,6 +3,8 @@ package modele;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import javax.swing.JLabel;
+
 import controleur.Controle;
 import controleur.Global;
 import outils.connexion.Connection;
@@ -13,13 +15,9 @@ import outils.connexion.Connection;
  */
 public class JeuServeur extends Jeu implements Global{
 
-	/**
-	 * Collection de murs
-	 */
+	// Collection de murs
 	private ArrayList<Mur> lesMurs = new ArrayList<Mur>() ;
-	/**
-	 * Collection de joueurs
-	 */
+	// Collection de joueurs
 	private Hashtable<Connection, Joueur> lesJoueurs = new Hashtable<Connection, Joueur>() ;
 	
 	/**
@@ -31,39 +29,58 @@ public class JeuServeur extends Jeu implements Global{
 	
 	@Override
 	public void connexion(Connection connection) {
-		lesJoueurs.put(connection, new Joueur());
+		this.lesJoueurs.put(connection, new Joueur(this));
 	}
 
 	@Override
 	public void reception(Connection connection, Object info) {
 		String[] infos = ((String)info).split(SEP);
-		switch (infos[0]) {
-			case "pseudo" :
-				controle.evenementJeuServeur("ajout panel mur", connection);
-				(lesJoueurs.get(connection)).initPerso(infos[1], Integer.parseInt(infos[2]));
-				break;
+		String ordre = infos[0]; 
+		switch (ordre) {
+		case "pseudo" :
+			controle.evenementJeuServeur("ajout panel mur", connection);
+			String pseudo = infos[1];
+			int numPerso = Integer.parseInt(infos[2]);
+			this.lesJoueurs.get(connection).initPerso(pseudo, numPerso, this.lesJoueurs.values(), this.lesMurs);
+			break;
 		}
 	}
 	
 	@Override
 	public void deconnexion() {
 	}
-
+	
+	/**
+	 * Ajoute des éléments au lblJeu de l'arène
+	 */
+	public void ajoutJLabelJeuArene(JLabel jlabel) {
+		this.controle.evenementJeuServeur("ajout jlabel jeu", jlabel);		
+	}
+	
 	/**
 	 * Envoi d'une information vers tous les clients
 	 * fais appel plusieurs fois à l'envoi de la classe Jeu
-	 */
+	 */	
 	public void envoi() {
 	}
-
+	
+	/**
+	 * Envoi du panel jpnJeu à tous les joueurs
+	 */
+	public void envoiJeuATous() {
+		for (Connection connection : this.lesJoueurs.keySet()) {
+			this.controle.evenementJeuServeur("modif panel jeu", connection);
+		}
+	}
+	
 	/**
 	 * Génération des murs
 	 */
 	public void constructionMurs() {
 		for(int k = 0; k < NBMURS; k++) {
 			Mur unMur = new Mur();
-			lesMurs.add(unMur);
-			controle.evenementJeuServeur("ajout mur", unMur.getJLabel());
+			this.lesMurs.add(unMur);
+			this.controle.evenementJeuServeur("ajout mur", unMur.getJLabel());
 		}
-	}	
+	}
 }

@@ -9,4 +9,5 @@ public interface Global {
 	int LARGMUR = 34;	// largeur du mur
 	int HAUTMUR = 35;	// hauteur du mur
 	int NBMURS = 20;	// nombre de murs
+	int TAILLEBL = 17;	// largeur et hauteur de la boule
 }
