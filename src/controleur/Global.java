@@ -1,13 +1,44 @@
 package controleur;
 
 public interface Global {
-	int PORT = 6666;	// port d'écoute du serveur jeu
-	String SEP = "~";	// séparateur de chaîne
-	int PERSOMAX = 3;	// numéro de personnage max
-	int LARGARN = 800;  // largeur de l'arène
-	int HAUTARN = 600;	// hauteur de l'arène
-	int LARGMUR = 34;	// largeur du mur
-	int HAUTMUR = 35;	// hauteur du mur
-	int NBMURS = 20;	// nombre de murs
-	int TAILLEBL = 17;	// largeur et hauteur de la boule
+	/**
+	 * port d'écoute du serveur jeu
+	 */
+	int PORT = 6666;
+	/**
+	 * séparateur de chaîne
+	 */
+	String SEP = "~";
+	/**
+	 * numéro de personnage max
+	 */
+	int PERSOMAX = 3;
+	/**
+	 * largeur de l'arène
+	 */
+	int LARGARN = 800;
+	/**
+	 * hauteur de l'arène
+	 */
+	int HAUTARN = 600;
+	/**
+	 *  largeur du mur
+	 */
+	int LARGMUR = 34;
+	/**
+	 *  hauteur du mur
+	 */
+	int HAUTMUR = 35;
+	/**
+	 * nombre de murs
+	 */
+	int NBMURS = 20;
+	/**
+	 *  largeur et hauteur de la boule
+	 */
+	int TAILLEBL = 17;
+	/**
+	 * valeur du pas pour un déplacement
+	 */
+	int PAS = 10;
 }

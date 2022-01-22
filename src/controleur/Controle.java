@@ -19,9 +19,21 @@ import controleur.Global;
  * @author emds
  */
 public class Controle implements AsyncResponse, Global {
+	/**
+	 * Communication avec la frame EntreeJeu
+	 */
 	private EntreeJeu frmEntreeJeu ;
+	/**
+	 * Communication avec la frame Arene
+	 */
 	private Arene frmArene;
-	private ChoixJoueur frmChoix;
+	/**
+	 * Communication avec la frame ChoixJoueur
+	 */
+	private ChoixJoueur frmChoixJoueur;
+	/**
+	 * Communication avec leJeu, de type JeuClient ou JeuServeur
+	 */
 	private Jeu leJeu;
 
 	/**
@@ -42,6 +54,7 @@ public class Controle implements AsyncResponse, Global {
 	
 	/**
 	 * Déclenche la création d'un serveur ou le rejoignement d'un serveur existant
+	 * @param info transmise par la frame EntreeJeu
 	 */
 	public void evenementEntreeJeu(String info) {	
 		if (info.equals("serveur")) {
@@ -58,20 +71,20 @@ public class Controle implements AsyncResponse, Global {
 	}
 	
 	/**
-	 * Ouverture de la zone de jeu après sélection du personnage et pseudo
+	 * Reçoit des informations de la frame ChoixJoueur
 	 * @param pseudo transmis par la frame ChoixJoueur
 	 * @param numPerso transmis par la frame ChoixJoueur
 	 */
 	public void evenementChoixJoueur(String pseudo, int numPerso) {
-		this.frmChoix.dispose();
+		this.frmChoixJoueur.dispose();
 		this.frmArene.setVisible(true);
 		((JeuClient)this.leJeu).envoi("pseudo" + SEP + pseudo + SEP + numPerso);	
 	}
 	
 	/**
 	 * Reçoit des informations de leJeu de type JeuServeur
-	 * @param ordre
-	 * @param info
+	 * @param ordre action à exécuter
+	 * @param info paramètre
 	 */
 	public void evenementJeuServeur(String ordre, Object info) {
 		switch (ordre) {
@@ -96,8 +109,8 @@ public class Controle implements AsyncResponse, Global {
 	
 	/**
 	 * Reçoit des informations de leJeu de type JeuClient
-	 * @param ordre
-	 * @param info
+	 * @param ordre action à exécuter
+	 * @param info paramètre
 	 */
 	public void evenementJeuClient(String ordre, Object info) {
 		switch (ordre) {
@@ -115,23 +128,31 @@ public class Controle implements AsyncResponse, Global {
 	
 	/**
 	 * Reçoit des informations de frmArene
+	 * @param info transmise par la frame Arene
 	 */	
-	public void evenementArene(String message) {
-		((JeuClient)leJeu).envoi("tchat" + SEP + message);
-	}
-	
+	public void evenementArene(Object info) {
+		if (info instanceof String) {
+			((JeuClient)leJeu).envoi("tchat" + SEP + (String)info);
+		}
+		else if (info instanceof Integer) {
+			((JeuClient)leJeu).envoi("action" + SEP + (Integer)info);
+		}
+	}	
 	
 	/**
-	 * 
-	 * @param connection
-	 * @param objet
+	 * Envoie des informations au serveur (?)
+	 * @param connection informations de connexion d'un joueur
+	 * @param info à transmesttre au serveur
 	 */
 	public void envoi(Connection connection, Object info) {
 		connection.envoi(info);
 	}
 	
 	/**
-	 * 
+	 * Réceptionne un ordre relatif à une connexion (?)
+	 * @param connection informations de connexion d'un joueur
+	 * @param ordre à exécuter
+	 * @param info à transmesttre (?)
 	 */
 	@Override
 	public void reception(Connection connection, String ordre, Object info) {
@@ -142,8 +163,8 @@ public class Controle implements AsyncResponse, Global {
 				this.leJeu.connexion(connection);
 				this.frmEntreeJeu.dispose();
 				this.frmArene = new Arene(this, "client");
-				this.frmChoix = new ChoixJoueur(this);
-				this.frmChoix.setVisible(true);	
+				this.frmChoixJoueur = new ChoixJoueur(this);
+				this.frmChoixJoueur.setVisible(true);	
 			}
 			else {
 				this.leJeu.connexion(connection);
