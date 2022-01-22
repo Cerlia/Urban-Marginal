@@ -14,16 +14,26 @@ public class JeuClient extends Jeu {
 	
 	/**
 	 * Controleur
+	 * @param controle contrôleur
 	 */
 	public JeuClient(Controle controle) {
 		super.controle = controle;
 	}
 	
+	/**
+	 * Initialise la connexion (?)
+	 * @param connection infos de connexion d'un joueur
+	 */
 	@Override
 	public void connexion(Connection connection) {
 		this.connection = connection;
 	}
 
+	/**
+	 * Réceptionne des données de (?)
+	 * @param connection
+	 * @param info
+	 */
 	@Override
 	public void reception(Connection connection, Object info) {
 		if(info instanceof JPanel) {
@@ -39,6 +49,9 @@ public class JeuClient extends Jeu {
 		}
 	}
 	
+	/**
+	 * Déconnecte
+	 */
 	@Override
 	public void deconnexion() {
 	}
@@ -46,6 +59,7 @@ public class JeuClient extends Jeu {
 	/**
 	 * Envoi d'une information vers le serveur
 	 * fait appel une fois à l'envoi dans la classe Jeu
+	 * @param message à transmettre
 	 */
 	public void envoi(String message) {
 		super.envoi(this.connection, message);

@@ -11,27 +11,39 @@ import outils.connexion.Connection;
 
 /**
  * Gestion du jeu côté serveur
- *
  */
 public class JeuServeur extends Jeu implements Global{
-
-	// Collection de murs
+	/**
+	 *  Collection de murs
+	 */
 	private ArrayList<Mur> lesMurs = new ArrayList<Mur>() ;
-	// Collection de joueurs
+	/**
+	 *  Collection de joueurs
+	 */
 	private Hashtable<Connection, Joueur> lesJoueurs = new Hashtable<Connection, Joueur>() ;
 	
 	/**
 	 * Constructeur
+	 * @param controle contrôleur
 	 */
 	public JeuServeur(Controle controle) {
 		super.controle = controle;
 	}
 	
+	/**
+	 * Ajoute une connexion à la liste des joueurs
+	 * @param connection informations de connexion du joueur
+	 */
 	@Override
 	public void connexion(Connection connection) {
 		this.lesJoueurs.put(connection, new Joueur(this));
 	}
 
+	/**
+	 * Reçoit des données de (?)
+	 * @param connection informations de connexion d'un joueur
+	 * @param info transmise 
+	 */
 	@Override
 	public void reception(Connection connection, Object info) {
 		String[] infos = ((String)info).split(SEP);
@@ -49,6 +61,9 @@ public class JeuServeur extends Jeu implements Global{
 			String phrase = nomJoueur + " > " + infos[1];
 			controle.evenementJeuServeur("ajout phrase", phrase);
 			break;
+		case "action" :
+			this.lesJoueurs.get(connection).action((Integer.parseInt(infos[1])), lesJoueurs.values(), lesMurs);
+			break;
 		}
 	}
 	
@@ -58,6 +73,7 @@ public class JeuServeur extends Jeu implements Global{
 	
 	/**
 	 * Ajoute des éléments au lblJeu de l'arène
+	 * @param jLabel JLabel à ajouter
 	 */
 	public void ajoutJLabelJeuArene(JLabel jlabel) {
 		this.controle.evenementJeuServeur("ajout jlabel jeu", jlabel);		
@@ -65,7 +81,8 @@ public class JeuServeur extends Jeu implements Global{
 	
 	/**
 	 * Envoi d'une information vers tous les clients
-	 * fais appel plusieurs fois à l'envoi de la classe Jeu
+	 * fait appel plusieurs fois à l'envoi de la classe Jeu
+	 * @param info à transmettre
 	 */	
 	public void envoi(Object info) {
 		for(Connection connection : this.lesJoueurs.keySet()) {

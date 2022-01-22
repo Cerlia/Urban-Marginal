@@ -33,6 +33,8 @@ public class Arene extends JFrame implements Global {
 	private Controle controle;
 	// indique si l'arène est celle d'un client ou du serveur
 	private boolean client = false;
+	// mémorise le code de la touche si c'est une flèche, -1 sinon
+	private int touche;
 	
 	/**
 	 * getter sur le panel des murs
@@ -63,6 +65,7 @@ public class Arene extends JFrame implements Global {
 		this.jpnJeu.removeAll();
 		this.jpnJeu.add(jpnJeu);
 		this.jpnJeu.repaint();
+		this.contentPane.requestFocus();
 	}
 	
 	/**
@@ -105,6 +108,34 @@ public class Arene extends JFrame implements Global {
 		this.txtChat.setCaretPosition(this.txtChat.getDocument().getLength());
 	}
 
+
+	/**
+	 * Réagit à l'appui d'une flèche
+	 * @param e touche appuyée
+	 */
+	public void reactionToucheFleche(KeyEvent e) {
+		if(e.getKeyCode() >= KeyEvent.VK_LEFT && e.getKeyCode() <= KeyEvent.VK_DOWN) {
+			touche = e.getKeyCode();						
+		}
+		else {
+			touche = -1;
+		}
+		if (touche != -1) {
+			controle.evenementArene(touche);
+		}
+	}
+	
+	public void reactionToucheEntree(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			if(!txtSaisie.getText().equals("")) {
+				controle.evenementArene(txtSaisie.getText());
+				txtSaisie.setText("");
+				contentPane.requestFocus();
+			}					
+		}
+	}
+	
+	
 	/**
 	 * Constructeur
 	 */
@@ -123,6 +154,15 @@ public class Arene extends JFrame implements Global {
 		setTitle("Arène");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
+		if (client) {
+			contentPane.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					reactionToucheFleche(e);
+				}
+			});
+		}
+
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
@@ -143,12 +183,13 @@ public class Arene extends JFrame implements Global {
 			txtSaisie.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
-					if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-						if(!txtSaisie.getText().equals("")) {
-							controle.evenementArene(txtSaisie.getText());
-							txtSaisie.setText("");
-						}					
-					}
+					reactionToucheEntree(e);						
+				}
+			});
+			txtSaisie.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					reactionToucheFleche(e);
 				}
 			});
 			txtSaisie.setBounds(0, 600, 800, 25);
