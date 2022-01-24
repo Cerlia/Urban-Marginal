@@ -55,7 +55,8 @@ public class JeuClient extends Jeu {
 	 * Déconnecte
 	 */
 	@Override
-	public void deconnexion() {
+	public void deconnexion(Connection connection) {
+		System.exit(0);
 	}
 
 	/**

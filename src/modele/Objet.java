@@ -42,6 +42,22 @@ public abstract class Objet {
 	}
 	
 	/**
+	 * setter sur posX
+	 * @param newPosX nouvelle position horizontale
+	 */
+	public void setPosX(int newPosX) {
+		posX = newPosX;
+	}
+	
+	/**
+	 * setter sur posY
+	 * @param newPosY nouvelle position verticale
+	 */
+	public void setPosY(int newPosY) {
+		posY = newPosY;
+	}
+	
+	/**
 	 * contrôle si l'objet actuel touche l'objet passé en paramètre
 	 * @param objet contient l'objet à contrôler
 	 * @return true si les 2 objets se touchent
