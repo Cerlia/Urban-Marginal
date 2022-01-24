@@ -125,6 +125,10 @@ public class Arene extends JFrame implements Global {
 		}
 	}
 	
+	/**
+	 * Réagit à l'appui de la touche Entrée
+	 * @param e touche appuyée
+	 */
 	public void reactionToucheEntree(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if(!txtSaisie.getText().equals("")) {
@@ -132,6 +136,16 @@ public class Arene extends JFrame implements Global {
 				txtSaisie.setText("");
 				contentPane.requestFocus();
 			}					
+		}
+	}
+	
+	/**
+	 * Réagit à l'appui de la barre d'espace
+	 * @param e touche appuyée
+	 */
+	public void reactionToucheEspace(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			controle.evenementArene(KeyEvent.VK_SPACE);			
 		}
 	}
 	
@@ -159,6 +173,7 @@ public class Arene extends JFrame implements Global {
 				@Override
 				public void keyPressed(KeyEvent e) {
 					reactionToucheFleche(e);
+					reactionToucheEspace(e);
 				}
 			});
 		}
@@ -183,12 +198,7 @@ public class Arene extends JFrame implements Global {
 			txtSaisie.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
-					reactionToucheEntree(e);						
-				}
-			});
-			txtSaisie.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyPressed(KeyEvent e) {
+					reactionToucheEntree(e);
 					reactionToucheFleche(e);
 				}
 			});
