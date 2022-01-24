@@ -227,6 +227,11 @@ public class Joueur extends Objet implements Global {
 	 * Le joueur se déconnecte et disparait
 	 */
 	public void departJoueur() {
-	}
-	
+		if (jLabel != null) {
+			jLabel.setVisible(false);
+			this.boule.getJLabel().setVisible(false);
+			this.message.setVisible(false);
+			jeuServeur.envoiJeuATous();
+		}
+	}	
 }

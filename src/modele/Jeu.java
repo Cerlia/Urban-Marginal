@@ -17,7 +17,7 @@ public abstract class Jeu {
 	public abstract void reception(Connection connection, Object info) ;
 	
 	// Déconnexion de l'ordinateur distant
-	public abstract void deconnexion() ;
+	public abstract void deconnexion(Connection connection) ;
 	
 	// Envoi d'une information vers un ordinateur distant
 	public void envoi(Connection connection, Object objet) {
