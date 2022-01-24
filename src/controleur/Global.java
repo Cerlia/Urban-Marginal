@@ -49,4 +49,8 @@ public interface Global {
 	 * hauteur moyenne d'un sprite de personnage
 	 */	
 	int HAUTPERS = 43;
+	/**
+	 * chemins des trois sons utilisés dans l'arène
+	 */
+	String[] PTHSONS = {"sons/fight.wav", "sons/hurt.wav", "sons/death.wav"};
 }

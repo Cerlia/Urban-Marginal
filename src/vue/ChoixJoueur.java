@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 
 import controleur.Controle;
 import controleur.Global;
+import outils.son.Son;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -23,15 +24,42 @@ import javax.swing.SwingConstants;
  * @author emds
  */
 public class ChoixJoueur extends JFrame implements Global {
-	// panel général
+	/**
+	 * panel général
+	 */
 	private JPanel contentPane;
-	// Zone de saisie du pseudo
+	/**
+	 * Zone de saisie du pseudo
+	 */
 	private JTextField txtPseudo;
-	// pour communication avec controle
+	/**
+	 * pour communication avec controle
+	 */
 	private Controle controle;
-	// pour l'affichage du personnage au moment du choix
+	/**
+	 *  pour l'affichage du personnage au moment du choix
+	 */
 	private JLabel lblPersonnage;
+	/**
+	 * numéro du personnage (1, 2 ou 3)
+	 */
 	private int numPerso;
+	/**
+	 * son joué à l'ouverture de la fenêtre
+	 */
+	private Son bienvenue;
+	/**
+	 * son joué au clic sur la flèche précédent
+	 */
+	private Son precedent;
+	/**
+	 * son joué au clic sur la flèche suivant
+	 */
+	private Son suivant;
+	/**
+	 * son joué au clic sur le bouton Go
+	 */
+	private Son go;
 
 	/**
 	 * Clic sur la flèche "précédent" pour afficher le personnage précédent
@@ -42,6 +70,7 @@ public class ChoixJoueur extends JFrame implements Global {
 			numPerso = 3;
 		}
 		affichePerso();
+		precedent.play();
 	}
 	
 	/**
@@ -53,6 +82,7 @@ public class ChoixJoueur extends JFrame implements Global {
 			numPerso = 1;
 		}
 		affichePerso();
+		suivant.play();
 	}
 	
 	/**
@@ -67,6 +97,7 @@ public class ChoixJoueur extends JFrame implements Global {
 		else {
 			controle.evenementChoixJoueur(txtPseudo.getText(), numPerso);			
 		}
+		go.play();
 	}
 
 	/**
@@ -179,14 +210,18 @@ public class ChoixJoueur extends JFrame implements Global {
 		URL resource = getClass().getClassLoader().getResource(chemin);
 		lblFond.setIcon(new ImageIcon(resource));		
 		contentPane.add(lblFond);
-		
 		// positionnement sur la zone de saisie
 		txtPseudo.requestFocus();
-		
 		// initialisation du numéro de personnage puis affichage
 		numPerso = 1;
 		affichePerso();
-		
+		// initialisation des sons
+		bienvenue = new Son(getClass().getClassLoader().getResource("sons/welcome.wav"));
+		precedent = new Son(getClass().getClassLoader().getResource("sons/precedent.wav"));
+		suivant = new Son(getClass().getClassLoader().getResource("sons/suivant.wav"));
+		go = new Son(getClass().getClassLoader().getResource("sons/go.wav"));
+		// lancement du son de bienvenue
+		bienvenue.play();
 		this.controle = controle;
 	}
 }

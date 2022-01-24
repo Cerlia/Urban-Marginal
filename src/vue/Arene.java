@@ -11,6 +11,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import controleur.Global;
 import controleur.Controle;
+import outils.son.Son;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -19,22 +20,42 @@ import java.awt.event.KeyEvent;
  * @author emds
  */
 public class Arene extends JFrame implements Global {
-	// Panel général
+	/**
+	 *  Panel général
+	 */
 	private JPanel contentPane;
-	// Zone de saisie du t'chat
+	/**
+	 *  Zone de saisie du t'chat
+	 */
 	private JTextField txtSaisie;
-	// Zone d'affichage du tchat
+	/**
+	 *  Zone d'affichage du tchat
+	 */
 	private JTextArea txtChat;
-	// Panel des murs
+	/**
+	 *  Panel des murs
+	 */
 	private JPanel jpnMurs;
-	// Panel des personnages
+	/**
+	 *  Panel des personnages
+	 */
 	private JPanel jpnJeu;
-	// controle pour communiquer avec contrôleur
+	/**
+	 *  controle pour communiquer avec contrôleur
+	 */
 	private Controle controle;
-	// indique si l'arène est celle d'un client ou du serveur
+	/**
+	 *  indique si l'arène est celle d'un client ou du serveur
+	 */
 	private boolean client = false;
-	// mémorise le code de la touche si c'est une flèche, -1 sinon
+	/**
+	 *  mémorise le code de la touche si c'est une flèche, -1 sinon
+	 */
 	private int touche;
+	/**
+	 * contient les chemins des sons utilisés dans l'arène
+	 */
+	private Son[] cheminsSons = new Son[3];
 	
 	/**
 	 * getter sur le panel des murs
@@ -149,6 +170,13 @@ public class Arene extends JFrame implements Global {
 		}
 	}
 	
+	/**
+	 * Joue un son
+	 * @param typeSon son à jouer (0-fight, 1-hurt, 2-death)
+	 */
+	public void joueSon(int typeSon) {
+		cheminsSons[typeSon].play();
+	}
 	
 	/**
 	 * Constructeur
@@ -163,6 +191,10 @@ public class Arene extends JFrame implements Global {
 		this.controle = controle;
 		if (typeArene != "serveur") {
 			client = true;
+			// récupération des chemins des sons
+			for (int k=0; k<3; k++) {
+				cheminsSons[k] = new Son(getClass().getClassLoader().getResource(PTHSONS[k]));
+			}
 		}
 		
 		setTitle("Arène");
