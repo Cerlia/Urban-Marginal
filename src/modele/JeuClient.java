@@ -46,6 +46,8 @@ public class JeuClient extends Jeu {
 			}		
 		} else if (info instanceof String) {
 			controle.evenementJeuClient("modif tchat", info);
+		} else if (info instanceof Integer) {
+			controle.evenementJeuClient("jouer son", info);
 		}
 	}
 	

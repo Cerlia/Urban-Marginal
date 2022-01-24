@@ -65,6 +65,7 @@ public class Boule extends Objet implements Global, Runnable {
 	public void run() {
 		attaquant.affiche("marche", 1);
 		this.jLabel.setVisible(true);
+		jeuServeur.envoi(0);
 		Joueur victime = null;
 		int lePas;
 		if(attaquant.getOrientation() == 0) {
@@ -83,6 +84,7 @@ public class Boule extends Objet implements Global, Runnable {
 		} while ((posX>0 && posX<LARGARN-TAILLEBL) && victime==null && (toucheCollectionObjets(lesMurs) == null));
 		// test s'il y a une victime
 		if (victime!=null && victime.estMort()==false) {
+			jeuServeur.envoi(1);
 			victime.perteVie();
 			attaquant.gainVie();
 			for (int k = 1; k < 3; k++) {
@@ -93,6 +95,7 @@ public class Boule extends Objet implements Global, Runnable {
 				for (int k = 1; k < 3; k++) {
 					victime.affiche("mort", k);
 					pause(80, 0);
+					jeuServeur.envoi(2);
 				}
 			} else {
 				victime.affiche("marche", 1);
