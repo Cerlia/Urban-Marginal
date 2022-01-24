@@ -41,4 +41,12 @@ public interface Global {
 	 * valeur du pas pour un déplacement
 	 */
 	int PAS = 10;
+	/**
+	 * largeur moyenne d'un sprite de personnage
+	 */	
+	int LARGPERS = 33;
+	/**
+	 * hauteur moyenne d'un sprite de personnage
+	 */	
+	int HAUTPERS = 43;
 }

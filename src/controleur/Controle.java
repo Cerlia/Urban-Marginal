@@ -152,7 +152,7 @@ public class Controle implements AsyncResponse, Global {
 	 * Réceptionne un ordre relatif à une connexion (?)
 	 * @param connection informations de connexion d'un joueur
 	 * @param ordre à exécuter
-	 * @param info à transmesttre (?)
+	 * @param info à transmettre (?)
 	 */
 	@Override
 	public void reception(Connection connection, String ordre, Object info) {

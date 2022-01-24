@@ -1,6 +1,7 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 
 import javax.swing.JLabel;
@@ -21,6 +22,10 @@ public class JeuServeur extends Jeu implements Global{
 	 *  Collection de joueurs
 	 */
 	private Hashtable<Connection, Joueur> lesJoueurs = new Hashtable<Connection, Joueur>() ;
+	
+	public Collection getLesJoueurs() {
+		return lesJoueurs.values();
+	}
 	
 	/**
 	 * Constructeur
@@ -62,7 +67,7 @@ public class JeuServeur extends Jeu implements Global{
 			controle.evenementJeuServeur("ajout phrase", phrase);
 			break;
 		case "action" :
-			this.lesJoueurs.get(connection).action((Integer.parseInt(infos[1])), lesJoueurs.values(), lesMurs);
+			this.lesJoueurs.get(connection).action((Integer.parseInt(infos[1])), this.lesJoueurs.values(), this.lesMurs);
 			break;
 		}
 	}

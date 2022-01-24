@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.Collection;
+
 import javax.swing.JLabel;
 
 /**
@@ -24,6 +26,22 @@ public abstract class Objet {
 	}
 	
 	/**
+	 * getter sur posX
+	 * @return posX de l'objet
+	 */
+	public Integer getPosX() {
+		return posX;
+	}
+	
+	/**
+	 * getter sur posY
+	 * @return posY de l'objet
+	 */
+	public Integer getPosY() {
+		return posY;
+	}
+	
+	/**
 	 * contrôle si l'objet actuel touche l'objet passé en paramètre
 	 * @param objet contient l'objet à contrôler
 	 * @return true si les 2 objets se touchent
@@ -38,4 +56,20 @@ public abstract class Objet {
 				this.posY < objet.posY + objet.jLabel.getHeight()) ;
 		}		
 	}	
+	
+	/**
+	 * contrôle si l'objet actuel touche un objet parmi la collection
+	 * @param laCollection collection d'objets à vérifier
+	 * @return true s'il existe une collision
+	 */
+	public Objet toucheCollectionObjets(Collection<Objet> lesObjets) {
+		for(Objet unObjet : lesObjets) {
+			if(!this.equals(unObjet)) {
+				if(toucheObjet(unObjet)) {
+					return unObjet;
+				}
+			}
+		}
+		return null;
+	}
 }
